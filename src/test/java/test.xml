@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<class>>
+    <dbtype>POSTGRES</dbtype>
+    <database>test</database>
+    <host>localhost</host>
+    <port>5432</port>
+    <connectionProperties>
+        <item>user=dbadmin</item>
+        <item>password=3hLVnpUvhddky</item>
+    </connectionProperties>
+    <query>
+        <item>DROP TABLE IF EXISTS a1;</item>
+        <item>CREATE TABLE a1 (id bigint PRIMARY KEY, name varchar(255));</item>
+    </query>
+</class>

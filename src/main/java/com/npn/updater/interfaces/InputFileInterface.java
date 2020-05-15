@@ -1,4 +1,9 @@
 package com.npn.updater.interfaces;
 
-public class InputFileInterface {
+import com.npn.updater.model.DbOperationItem;
+
+public interface InputFileInterface {
+
+    DbOperationItem getOperation(String filePath);
+
 }
