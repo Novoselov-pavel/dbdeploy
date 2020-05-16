@@ -1,6 +1,7 @@
 package com.npn.updater.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 /**Базовый клас работы с базы данных. Содержит всю информацию по свойствам соединения и список запросов который необходимо выполинить.
@@ -63,5 +64,23 @@ public class DbOperationItem {
 
     public void setDbType(DbType dbType) {
         this.dbType = dbType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DbOperationItem that = (DbOperationItem) o;
+        return Objects.equals(sqlQuery, that.sqlQuery) &&
+                Objects.equals(database, that.database) &&
+                Objects.equals(host, that.host) &&
+                Objects.equals(port, that.port) &&
+                Objects.equals(connectionProperties, that.connectionProperties) &&
+                dbType == that.dbType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sqlQuery, database, host, port, connectionProperties, dbType);
     }
 }

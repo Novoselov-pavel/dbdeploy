@@ -7,6 +7,8 @@
     <connectionProperties>
         <item>user=dbadmin</item>
         <item>password=3hLVnpUvhddky</item>
+        <item>ignored1=</item>
+        <item>ignored2</item>
     </connectionProperties>
     <query>
         <item>DROP TABLE IF EXISTS a1;</item>
