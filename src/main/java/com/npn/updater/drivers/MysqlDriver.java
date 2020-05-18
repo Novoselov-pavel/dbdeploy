@@ -1,13 +1,65 @@
 package com.npn.updater.drivers;
 
+
 import com.npn.updater.exception.RollbackException;
-import com.npn.updater.interfaces.DbInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
-public class MysqlDriver implements DbInterface {
+public class MysqlDriver extends SQLDriver {
+    private static final Logger logger = LoggerFactory.getLogger(MysqlDriver.class);
+
+    /**
+     * Конструктор класса SQLDriver
+     *
+     * @param database             имя базы данных, not null
+     * @param host                 имя хоста, может быть null
+     * @param port                 имя порта, может быть null
+     * @param connectionProperties {@link Map} с дополнительными параметрами подключения, может быть null
+     */
+    public MysqlDriver(String database, String host, String port, Properties connectionProperties) {
+        super(database, host, port, connectionProperties);
+        JDBC_URI_PREFIX = "jdbc:mysql:";
+        JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    }
+
+    /**
+     * Выполняет запросы. При ошибке выполняет rollback. В случае невозможности rollback будет выброшен
+     * {@link RollbackException}.
+     *
+     * @param sqlQuery - лист с запросами
+     * @throws RollbackException при ошибка
+     */
     @Override
     public void executeStatements(List<String> sqlQuery) throws RollbackException {
-        //TODO
+        logger.debug("executeStatements");
+        logger.info("Start executing queries");
+        super.executeStatements(sqlQuery);
+        logger.info("End executing queries");
+    }
+
+    @Override
+    String getDatabaseUrl() {
+        logger.debug("getDatabaseUrl");
+        return super.getDatabaseUrl();
+    }
+
+    /**
+     * Создает {@link Connection}
+     *
+     * @param driver
+     * @return {@link Connection}
+     * @throws SQLException           при ошибке
+     * @throws ClassNotFoundException при ошибке при регистрации JDBC драйвера
+     */
+    @Override
+    Connection getConnection(String driver) throws SQLException, ClassNotFoundException {
+        logger.debug("getConnection");
+        logger.info("Registering JDBC driver and creating database connection");
+        return super.getConnection(driver);
     }
 }

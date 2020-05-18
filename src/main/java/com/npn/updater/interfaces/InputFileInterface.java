@@ -14,7 +14,7 @@ public interface InputFileInterface {
      * @param filePath путь к файлу
      * @return {@link DbOperationItem}
      */
-    DbOperationItem getOperation(String filePath);
+    DbOperationItem getOperation(String filePath) throws Exception;
 
     /**Выдает список расширений файлов которые обрабатываются текущей реализацией интерфейса
      *

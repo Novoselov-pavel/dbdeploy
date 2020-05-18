@@ -8,12 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.*;
 
 /**XML PARSER
@@ -35,44 +32,34 @@ public class XmlDriver implements InputFileInterface {
     }
 
 
-    //TODO logging
     @Override
-    public DbOperationItem getOperation(String filePath) {
+    public DbOperationItem getOperation(String filePath) throws Exception {
         logger.debug("DbOperationItem");
-        try {
-            logger.info("Start reading XML: " + filePath);
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(filePath);
 
-            DbType type = DbType.getDbType(getFirstElementTextByTagName(nodeName.get(0),document.getDocumentElement()));
-            String database = getFirstElementTextByTagName(nodeName.get(1),document.getDocumentElement());
-            String host = getFirstElementTextByTagName(nodeName.get(2),document.getDocumentElement());
-            String port = getFirstElementTextByTagName(nodeName.get(3),document.getDocumentElement());
-            Properties properties = new Properties();
-            properties.putAll(getMapFromItems(nodeName.get(4),document.getDocumentElement()));
+        logger.info("Start reading XML: " + filePath);
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(filePath);
 
-            List<String> sqlList = getItems(nodeName.get(5),document.getDocumentElement());
+        DbType type = DbType.getDbType(getFirstElementTextByTagName(nodeName.get(0),document.getDocumentElement()));
+        String database = getFirstElementTextByTagName(nodeName.get(1),document.getDocumentElement());
+        String host = getFirstElementTextByTagName(nodeName.get(2),document.getDocumentElement());
+        String port = getFirstElementTextByTagName(nodeName.get(3),document.getDocumentElement());
+        Properties properties = new Properties();
+        properties.putAll(getMapFromItems(nodeName.get(4),document.getDocumentElement()));
 
-            DbOperationItem operationItem = new DbOperationItem();
-            operationItem.setDbType(type);
-            operationItem.setDatabase(database);
-            operationItem.setHost(host);
-            operationItem.setPort(port);
-            operationItem.setConnectionProperties(properties);
-            operationItem.setSqlQuery(sqlList);
+        List<String> sqlList = getItems(nodeName.get(5),document.getDocumentElement());
 
-            return operationItem;
-        }  catch (ParserConfigurationException e) {
-            e.printStackTrace(); ///TODO
-        } catch (IOException e) {
-            e.printStackTrace(); ///TODO
-        } catch (SAXException e) {
-            e.printStackTrace();  ///TODO
-        }
+        DbOperationItem operationItem = new DbOperationItem();
+        operationItem.setDbType(type);
+        operationItem.setDatabase(database);
+        operationItem.setHost(host);
+        operationItem.setPort(port);
+        operationItem.setConnectionProperties(properties);
+        operationItem.setSqlQuery(sqlList);
+        logger.info("End reading XML: " + filePath);
+        return operationItem;
 
-
-        return null;
     }
 
     /**
@@ -104,6 +91,7 @@ public class XmlDriver implements InputFileInterface {
      * @return
      */
     private String getFirstElementTextByTagName(final String tagName, final Element element) {
+        logger.debug("getFirstElementTextByTagName");
         NodeList list = getElementsByTagName(tagName, element);
         if (list!=null && list.item(0)!=null) {
             return list.item(0).getTextContent();
@@ -121,6 +109,7 @@ public class XmlDriver implements InputFileInterface {
      * @return
      */
     private Map<String,String> getMapFromItems(final String tagName, final Element element) {
+        logger.debug("getMapFromItems");
         Map<String,String> map = new HashMap<>();
         List<String> getItems = getItems(tagName,element);
         getItems.forEach(x->{

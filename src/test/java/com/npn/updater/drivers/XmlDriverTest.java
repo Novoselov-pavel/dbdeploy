@@ -33,8 +33,12 @@ class XmlDriverTest {
 
     @Test
     void getOperation() {
-        XmlDriver xmlDriver = new XmlDriver();
-        DbOperationItem result = xmlDriver.getOperation(path);
-        assertEquals(testItem,result);
+        try {
+            XmlDriver xmlDriver = new XmlDriver();
+            DbOperationItem result = xmlDriver.getOperation(path);
+            assertEquals(testItem,result);
+        } catch (Exception e) {
+            fail();
+        }
     }
 }
