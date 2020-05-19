@@ -1,4 +1,4 @@
-package com.npn.updater.model;
+package com.npn.dbdeploy.model;
 
 public enum DbType {
     MYSQL, POSTGRES;

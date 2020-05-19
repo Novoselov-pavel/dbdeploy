@@ -1,7 +1,7 @@
-package com.npn.updater.drivers;
+package com.npn.dbdeploy.drivers;
 
-import com.npn.updater.exception.RollbackException;
-import com.npn.updater.interfaces.DbInterface;
+import com.npn.dbdeploy.exception.RollbackException;
+import com.npn.dbdeploy.interfaces.DbInterface;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,10 +26,10 @@ public abstract class SQLDriver implements DbInterface {
     String  JDBC_DRIVER;
 
 
-    String database;
-    String host;
-    String port;
-    Properties connectionProperties;
+    final String database;
+    final String host;
+    final String port;
+    final Properties connectionProperties;
 
     /**Конструктор класса SQLDriver
      *
@@ -50,17 +50,19 @@ public abstract class SQLDriver implements DbInterface {
      * {@link RollbackException}.
      *
      * @param sqlQuery - лист с запросами
-     * @throws RollbackException при ошибка
+     * @throws RollbackException - ошибка отката изменений
+     * @throws SQLException - ошибка запроса
+     * @throws ClassNotFoundException - ошибка регистрации драйвера
      */
     @Override
-    public void executeStatements(List<String> sqlQuery) throws RollbackException {
+    public void executeStatements(List<String> sqlQuery) throws RollbackException, SQLException, ClassNotFoundException {
         Connection connection = null;
         try{
             connection = getConnection(JDBC_DRIVER);
             connection.setAutoCommit(false);
             Statement statement = connection.createStatement();
             for (String s : sqlQuery) {
-                statement.execute(s);
+                executeQuery(s,statement);
             }
             connection.commit();
             statement.close();
@@ -68,16 +70,33 @@ public abstract class SQLDriver implements DbInterface {
         } catch (SQLException e) {
             if (connection!=null) {
                 try{
-                    connection.rollback();
+                    rollback(connection);
                 } catch (SQLException error) {
                     throw new RollbackException("Rollback failed", error);
                 }
             }
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw e;
         }
 
+    }
+
+    /** Выполняет запрос
+     *
+     * @param query запрос
+     * @param statement {@link Statement}
+     * @throws SQLException
+     */
+    void executeQuery(final String query,final Statement statement) throws SQLException {
+        statement.execute(query);
+    }
+
+    /**Rollback
+     *
+     * @param connection
+     * @throws SQLException
+     */
+    void rollback(final Connection connection) throws SQLException {
+        connection.rollback();
     }
 
 

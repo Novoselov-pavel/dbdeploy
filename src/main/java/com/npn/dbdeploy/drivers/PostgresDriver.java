@@ -1,11 +1,12 @@
-package com.npn.updater.drivers;
+package com.npn.dbdeploy.drivers;
 
-import com.npn.updater.exception.RollbackException;
+import com.npn.dbdeploy.exception.RollbackException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -39,11 +40,36 @@ public class PostgresDriver extends SQLDriver {
      * @throws RollbackException при ошибка
      */
     @Override
-    public void executeStatements(List<String> sqlQuery) throws RollbackException {
+    public void executeStatements(List<String> sqlQuery) throws RollbackException, SQLException, ClassNotFoundException {
         logger.debug("executeStatements");
         logger.info("Start executing queries");
         super.executeStatements(sqlQuery);
         logger.info("End executing queries");
+    }
+
+    /**
+     * Выполняет запрос
+     *
+     * @param query     запрос
+     * @param statement {@link Statement}
+     * @throws SQLException
+     */
+    @Override
+    void executeQuery(String query, Statement statement) throws SQLException {
+        logger.info("Execute sql: {}",query);
+        super.executeQuery(query, statement);
+    }
+
+    /**
+     * Rollback
+     *
+     * @param connection
+     * @throws SQLException
+     */
+    @Override
+    void rollback(Connection connection) throws SQLException {
+        logger.info("Rollback operations");
+        super.rollback(connection);
     }
 
     @Override

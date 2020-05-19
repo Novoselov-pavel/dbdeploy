@@ -1,8 +1,8 @@
-package com.npn.updater.drivers;
+package com.npn.dbdeploy.drivers;
 
-import com.npn.updater.interfaces.InputFileInterface;
-import com.npn.updater.model.DbOperationItem;
-import com.npn.updater.model.DbType;
+import com.npn.dbdeploy.interfaces.InputFileInterface;
+import com.npn.dbdeploy.model.DbOperationItem;
+import com.npn.dbdeploy.model.DbType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -65,13 +65,23 @@ public class XmlDriver implements InputFileInterface {
     /**
      * Выдает список расширений файлов которые обрабатываются текущей реализацией интерфейса
      *
-     * @return unmodificable set
+     * @return unmodifiable set
      */
     @Override
     public Set<String> getExtension() {
         Set<String> set = new TreeSet<>(Comparator.naturalOrder());
         set.add("xml");
         return Collections.unmodifiableSet(set);
+    }
+
+    /**Проверяет расширение переданного файла на соответствие списку расширений
+     *
+     * @param path путь к файлу.
+     * @return true если совпадает, иначе false. Если путь null - false.
+     */
+    public boolean isFileHasCorrectExtension(String path) {
+        if (path == null) return false;
+        return getExtension().stream().anyMatch(x -> path.endsWith("." + x));
     }
 
     /**Возвращает {@link NodeList}  элементов с соответсвующими tagName

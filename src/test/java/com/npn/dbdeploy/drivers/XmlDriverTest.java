@@ -1,7 +1,7 @@
-package com.npn.updater.drivers;
+package com.npn.dbdeploy.drivers;
 
-import com.npn.updater.model.DbOperationItem;
-import com.npn.updater.model.DbType;
+import com.npn.dbdeploy.model.DbOperationItem;
+import com.npn.dbdeploy.model.DbType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -40,5 +40,18 @@ class XmlDriverTest {
         } catch (Exception e) {
             fail();
         }
+    }
+
+    @Test
+    void isFileHasCorrectExtension() {
+        String false1 = "/home/pavel/IdeaProjects/dbdeploy/src/test/java/asdasfaf.ssfd";
+        String false2 = null;
+        String false3 = "";
+        XmlDriver xmlDriver = new XmlDriver();
+        assertTrue(xmlDriver.isFileHasCorrectExtension(path));
+        assertFalse(xmlDriver.isFileHasCorrectExtension(false1));
+        //noinspection ConstantConditions
+        assertFalse(xmlDriver.isFileHasCorrectExtension(false2));
+        assertFalse(xmlDriver.isFileHasCorrectExtension(false3));
     }
 }

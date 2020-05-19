@@ -1,8 +1,8 @@
-package com.npn.updater.model;
+package com.npn.dbdeploy.model;
 
-import com.npn.updater.drivers.MysqlDriver;
-import com.npn.updater.drivers.PostgresDriver;
-import com.npn.updater.interfaces.DbInterface;
+import com.npn.dbdeploy.drivers.MysqlDriver;
+import com.npn.dbdeploy.drivers.PostgresDriver;
+import com.npn.dbdeploy.interfaces.DbInterface;
 
 /**Фабрика интерфейса доступа работы с базой данных
  *

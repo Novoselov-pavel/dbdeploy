@@ -1,6 +1,6 @@
-package com.npn.updater.interfaces;
+package com.npn.dbdeploy.interfaces;
 
-import com.npn.updater.model.DbOperationItem;
+import com.npn.dbdeploy.model.DbOperationItem;
 
 import java.util.Set;
 
@@ -22,4 +22,10 @@ public interface InputFileInterface {
      */
     Set<String> getExtension();
 
+    /**Проверяет расширение переданного файла на соответствие списку расширений
+     *
+     * @param path путь к файлу
+     * @return true если совпадает, иначе false. Если путь null - false.
+     */
+     boolean isFileHasCorrectExtension(String path);
 }

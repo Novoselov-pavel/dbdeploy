@@ -1,4 +1,4 @@
-package com.npn.updater.exception;
+package com.npn.dbdeploy.exception;
 
 /**Исключение выбрасывается при ошибке отката изменений при изменении базы SQL
  *

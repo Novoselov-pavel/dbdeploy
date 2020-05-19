@@ -1,4 +1,4 @@
-package com.npn.updater.model;
+package com.npn.dbdeploy.model;
 
 import java.util.List;
 import java.util.Objects;
